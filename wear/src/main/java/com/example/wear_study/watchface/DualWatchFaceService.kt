@@ -40,6 +40,6 @@ class DualWatchFaceService: WatchFaceService() {
         return WatchFace(
             watchFaceType = WatchFaceType.ANALOG,
             renderer = renderer
-        )
+        ).setTapListener(tapListener = renderer)
     }
 }

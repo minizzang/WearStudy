@@ -28,9 +28,10 @@ import com.example.wear_study.presentation.theme.WearstudyTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            WearApp("Android")
-        }
+        setContentView(R.layout.activity_main)
+//        setContent {
+//            WearApp("Android")
+//        }
     }
 }
 

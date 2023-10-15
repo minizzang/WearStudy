@@ -4,7 +4,10 @@ import android.content.ContentValues.TAG
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.Rect
+import android.graphics.RectF
+import android.graphics.drawable.shapes.OvalShape
 import android.util.Log
 import android.view.SurfaceHolder
 import androidx.wear.watchface.ComplicationSlot
@@ -73,7 +76,15 @@ class DualCanvasRenderer(
 
         val textBounds = Rect()
         p_black.getTextBounds(timeText, 0, timeText.length, textBounds)
-        canvas.drawText(timeText, h_width, h_height-textBounds.exactCenterY(), p_black)
+//        canvas.drawText(timeText, h_width, h_height-textBounds.exactCenterY(), p_black)
+
+        val rectf = RectF(20f, 20f, bounds.width()-20f, bounds.height()-20f)
+        p_black.strokeCap = Paint.Cap.ROUND
+        val path = Path()
+        path.moveTo( 75f, 40f)
+        path.cubicTo(75f, 37f, 70f, 25f, 50f, 25f)
+        
+        canvas.drawArc(rectf, 0f, -180f, true, p_black)
     }
 
     override fun onTapEvent(tapType: Int, tapEvent: TapEvent, complicationSlot: ComplicationSlot?) {

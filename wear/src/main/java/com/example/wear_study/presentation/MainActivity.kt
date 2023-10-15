@@ -7,6 +7,7 @@
 package com.example.wear_study.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -24,47 +25,30 @@ import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import com.example.wear_study.R
 import com.example.wear_study.presentation.theme.WearstudyTheme
+import com.google.android.gms.wearable.MessageClient
+import com.google.android.gms.wearable.MessageEvent
+import com.google.android.gms.wearable.Wearable
 
-class MainActivity : ComponentActivity() {
+private const val DUAL_COUNT_PATH = "/dual_count"
+
+class MainActivity : ComponentActivity(), MessageClient.OnMessageReceivedListener {
+    private val messageClient by lazy {Wearable.getMessageClient(this)}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        setContent {
-//            WearApp("Android")
-//        }
     }
-}
 
-@Composable
-fun WearApp(greetingName: String) {
-    WearstudyTheme {
-        /* If you have enough items in your list, use [ScalingLazyColumn] which is an optimized
-         * version of LazyColumn for wear devices with some added features. For more information,
-         * see d.android.com/wear/compose.
-         */
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Greeting(greetingName = greetingName)
+    override fun onResume() {
+        super.onResume()
+
+        messageClient.addListener(this)
+    }
+
+    override fun onMessageReceived(messageEvent: MessageEvent) {
+        if (messageEvent.path == DUAL_COUNT_PATH) {
+            Log.d("received count: ", messageEvent.data[0].toInt().toString())
         }
     }
-}
 
-@Composable
-fun Greeting(greetingName: String) {
-    Text(
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center,
-        color = MaterialTheme.colors.primary,
-        text = stringResource(R.string.hello_world, greetingName)
-    )
-}
-
-@Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
-@Composable
-fun DefaultPreview() {
-    WearApp("Preview Android")
 }

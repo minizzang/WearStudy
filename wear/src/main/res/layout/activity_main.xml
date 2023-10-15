@@ -5,8 +5,9 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
-    <TextClock
-        android:id="@+id/textClock"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="This is Wear app" />
 </LinearLayout>

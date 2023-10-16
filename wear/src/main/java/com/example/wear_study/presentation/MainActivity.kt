@@ -7,8 +7,8 @@
 package com.example.wear_study.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,14 +24,25 @@ import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import com.example.wear_study.R
 import com.example.wear_study.presentation.theme.WearstudyTheme
+import com.google.android.gms.wearable.MessageClient
+import com.google.android.gms.wearable.MessageEvent
+import com.google.android.gms.wearable.Wearable
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), MessageClient.OnMessageReceivedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        setContent {
-//            WearApp("Android")
-//        }
+
+        Wearable.getMessageClient(this).addListener(this)
+    }
+
+    override fun onMessageReceived(messageEvent: MessageEvent) {
+        Log.d("WearApp", "Message received: ${String(messageEvent.data)}")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Wearable.getMessageClient(this).removeListener(this)
     }
 }
 

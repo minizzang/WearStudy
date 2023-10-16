@@ -30,25 +30,25 @@ import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.Wearable
 
 private const val DUAL_COUNT_PATH = "/dual_count"
-
 class MainActivity : ComponentActivity(), MessageClient.OnMessageReceivedListener {
     private val messageClient by lazy {Wearable.getMessageClient(this)}
+    val testVal = "helloWorld!"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        messageClient.addListener(this)
-    }
-
+//    override fun onResume() {
+//        super.onResume()
+//
+//        messageClient.addListener(this)
+//    }
+//
     override fun onMessageReceived(messageEvent: MessageEvent) {
-        if (messageEvent.path == DUAL_COUNT_PATH) {
-            Log.d("received count: ", messageEvent.data[0].toInt().toString())
-        }
+//        if (messageEvent.path == DUAL_COUNT_PATH) {
+//            Log.d("received count: ", messageEvent.data[0].toInt().toString())
+//        }
     }
 
 }

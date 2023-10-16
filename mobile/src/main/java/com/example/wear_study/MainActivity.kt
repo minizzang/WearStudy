@@ -7,7 +7,6 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Tasks
 import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.DataClient

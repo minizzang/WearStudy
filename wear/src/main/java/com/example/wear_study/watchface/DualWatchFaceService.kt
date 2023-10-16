@@ -1,5 +1,7 @@
 package com.example.wear_study.watchface
 
+import android.content.ContentValues
+import android.util.Log
 import android.view.SurfaceHolder
 import androidx.wear.watchface.CanvasType
 import androidx.wear.watchface.ComplicationSlotsManager
@@ -24,14 +26,13 @@ class DualWatchFaceService: WatchFaceService() {
         complicationSlotsManager: ComplicationSlotsManager,
         currentUserStyleRepository: CurrentUserStyleRepository
     ): WatchFace {
-
         // Creates class that renders the watch face.
         val renderer = DualCanvasRenderer(
-            //context = applicationContext,
+            context = applicationContext,
             surfaceHolder = surfaceHolder,
-            watchState = watchState,
             //complicationSlotsManager = complicationSlotsManager,
             currentUserStyleRepository = currentUserStyleRepository,
+            watchState = watchState,
             canvasType = CanvasType.HARDWARE,
             clearWithBackgroundTintBeforeRenderingHighlightLayer = true,
         )

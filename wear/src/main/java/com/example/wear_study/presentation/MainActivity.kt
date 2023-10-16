@@ -37,7 +37,13 @@ class MainActivity : ComponentActivity(), MessageClient.OnMessageReceivedListene
     }
 
     override fun onMessageReceived(messageEvent: MessageEvent) {
-        Log.d("WearApp", "Message received: ${String(messageEvent.data)}")
+        val message = String(messageEvent.data)
+        Log.d("WearApp", "Message received: $message")
+        val sharedPref = getSharedPreferences("WatchFacePreferences", MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("message", message)
+            apply()
+        }
     }
 
     override fun onDestroy() {

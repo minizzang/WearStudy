@@ -6,18 +6,29 @@ import android.os.Bundle
 import android.util.Log
 import com.google.android.gms.wearable.Wearable
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 class MainActivity : AppCompatActivity() {
+    private val context = this
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         findWearableNode(this)
+        setContentView(R.layout.activity_main)
         setContent {
             MaterialTheme {
                 // A surface container using the 'background' color from the theme
@@ -25,11 +36,41 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Button(onClick = {
-                        Log.d("PhoneApp", connectedNodeID.toString())
-                        sendMessageToWearable(this, "/count", "hello".toByteArray())
-                    }) {
-                        Text("Send")
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        var count by remember { mutableStateOf(0) }
+                        Text("Count: $count")
+                        Row() {
+                            Button(
+                                onClick = {
+                                    count = 0
+                                    sendMessageToWearable(
+                                        context,
+                                        "/count",
+                                        "0".toByteArray()
+                                    )
+                                },
+                                modifier = Modifier.padding(8.dp)
+                            ) {
+                                Text("Initialize")
+                            }
+                            Button(
+                                onClick = {
+                                    count++
+                                    sendMessageToWearable(
+                                        context,
+                                        "/count",
+                                        count.toString().toByteArray()
+                                    )
+                                },
+                                modifier = Modifier.padding(8.dp)
+                            ) {
+                                Text("Add count")
+                            }
+                        }
                     }
                 }
             }

@@ -74,7 +74,9 @@ class DualCanvasRenderer(
         val h_height = bounds.height() / 2f
         val p_black = Paint()
         val p_red = Paint()
+        val p_green = Paint()
         p_red.color = Color.RED
+        p_green.color = Color.GREEN
 
         if (isTapped) {
             canvas.drawColor(bg_light)
@@ -91,21 +93,25 @@ class DualCanvasRenderer(
         p_red.textSize = 80f
         p_red.strokeWidth = 40f
 
+        p_green.textSize = 100f
+        p_green.strokeWidth = 40f
+
         val minute = if (zonedDateTime.minute < 10) "0" + zonedDateTime.minute.toString() else zonedDateTime.minute.toString()
         val timeText = zonedDateTime.hour.toString() + ":" + minute
-
-        val textBounds = Rect()
-        p_black.getTextBounds(timeText, 0, timeText.length, textBounds)
-        canvas.drawText(timeText, h_width, h_height-textBounds.exactCenterY(), p_black)
-        canvas.drawText(getDataFromSharedPreference(), h_width, h_height + 100, p_red)
 
         val rectf = RectF(20f, 20f, bounds.width()-20f, bounds.height()-20f)
         p_black.strokeCap = Paint.Cap.ROUND
         val path = Path()
         path.moveTo( 75f, 40f)
         path.cubicTo(75f, 37f, 70f, 25f, 50f, 25f)
-        
-        canvas.drawArc(rectf, 0f, -180f, true, p_black)
+
+        canvas.drawArc(rectf, 0f, -180f, true, p_green)
+
+        val textBounds = Rect()
+        p_black.getTextBounds(timeText, 0, timeText.length, textBounds)
+        canvas.drawText(timeText, h_width, h_height-textBounds.exactCenterY(), p_black)
+        canvas.drawText(getDataFromSharedPreference(), h_width, h_height + 100, p_red)
+
     }
 
     override fun onTapEvent(tapType: Int, tapEvent: TapEvent, complicationSlot: ComplicationSlot?) {

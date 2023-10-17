@@ -14,10 +14,7 @@ import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.Wearable
 
-private const val DUAL_COUNT_PATH = "/dual_count"
-class DualWatchFaceService: WatchFaceService(), MessageClient.OnMessageReceivedListener {
-    private val messageClient by lazy { Wearable.getMessageClient(this)}
-
+class DualWatchFaceService: WatchFaceService() {
     override fun createUserStyleSchema(): UserStyleSchema {
         return super.createUserStyleSchema()
     }
@@ -31,11 +28,9 @@ class DualWatchFaceService: WatchFaceService(), MessageClient.OnMessageReceivedL
         complicationSlotsManager: ComplicationSlotsManager,
         currentUserStyleRepository: CurrentUserStyleRepository
     ): WatchFace {
-        messageClient.addListener(this)
-
         // Creates class that renders the watch face.
         val renderer = DualCanvasRenderer(
-            //context = applicationContext,
+            context = applicationContext,
             surfaceHolder = surfaceHolder,
             watchState = watchState,
             //complicationSlotsManager = complicationSlotsManager,
@@ -49,11 +44,5 @@ class DualWatchFaceService: WatchFaceService(), MessageClient.OnMessageReceivedL
             watchFaceType = WatchFaceType.ANALOG,
             renderer = renderer
         ).setTapListener(tapListener = renderer)
-    }
-
-    override fun onMessageReceived(messageEvent: MessageEvent) {
-        if (messageEvent.path == DUAL_COUNT_PATH) {
-            Log.d("received count: ", messageEvent.data[0].toInt().toString())
-        }
     }
 }

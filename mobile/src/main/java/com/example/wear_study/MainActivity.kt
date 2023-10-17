@@ -60,20 +60,13 @@ class MainActivity : AppCompatActivity(), OnClickListener {
 
     private fun sendDataToWearable() {
         CoroutineScope(Dispatchers.IO).launch {
-            Log.d("this is new thread", "sdf")
+            Log.d("this is new thread", "send data $count")
             val nodes = Tasks.await(capabilityClient.getCapability(DUAL_CAPABILITY_NAME, CapabilityClient.FILTER_REACHABLE)).nodes
-            val targetNodeId = nodes.first().id
-
-            messageClient.sendMessage(targetNodeId, DUAL_COUNT_PATH, byteArrayOf(count.toByte()))
+            val targetNodeId = nodes.firstOrNull()?.id
+            if (targetNodeId != null) {
+                messageClient.sendMessage(targetNodeId, DUAL_COUNT_PATH, byteArrayOf(count.toByte()))
+            }
         }
-//        lifecycleScope.launch {
-//
-//        }
-//        val putDataReq = PutDataMapRequest.create("/count").run {
-//            dataMap.putInt(COUNT_KEY, count)
-//            asPutDataRequest()
-//        }
-//        val putDataTask = dataClient.putDataItem(putDataReq)
     }
 
 
